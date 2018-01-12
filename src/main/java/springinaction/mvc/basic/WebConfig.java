@@ -1,8 +1,10 @@
 package springinaction.mvc.basic;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -39,5 +41,19 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         //要求前端控制器将静态资源的请求转发到Servlet容器中默认的Servlet上，而不是前端控制器处理
         configurer.enable ();
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource= new ResourceBundleMessageSource ();
+        messageSource.setBasename ("messages");
+
+        //another way ---
+
+
+
+
+
+        return messageSource;
     }
 }
