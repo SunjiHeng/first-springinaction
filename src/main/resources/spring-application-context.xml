@@ -3,8 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
 
 
     <bean class="springinaction.sound.system.SgtPeppers" id="sgtPeppers"/>
@@ -25,4 +26,21 @@
 
 </aop:config>
 
+
+
+   <!-- 配置流程执行器-->
+    <webflow-config:flow-executor id="flowExecutor" flow-registry="flowRegistry">
+         <webflow-config:flow-execution-repository />
+    </webflow-config:flow-executor>
+
+    <webflow-config:flow-registry id="flowRegistry" >
+        <webflow-config:flow-location path="/WEB-INF/flows/*/*-flow.xml"/>
+    </webflow-config:flow-registry>
+
+    <bean  class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping" id="flowHandlerMapping">
+        <property name="flowRegistry" ref="flowRegistry" />
+    </bean>
+    <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter" id="flowHandlerAdapter">
+        <property name="flowExecutor" ref="flowExecutor" />
+    </bean>
 </beans>
