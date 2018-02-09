@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //            .anyRequest ()
 //            .permitAll ();
 
-        http.formLogin ()
+        http.formLogin ().loginPage ("/login").and ().rememberMe ().tokenValiditySeconds (2419200).key ("spittrKey")
             .and ()
             .authorizeRequests ()
             .antMatchers ("/spitter/me")
@@ -46,7 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .and ()
             .requiresChannel ()
             .antMatchers ("/spitter/form")
-            .requiresSecure ();
+            .requiresSecure ()
+            .and ()
+            .httpBasic ().realmName ("Spittr");
 
     }
 
