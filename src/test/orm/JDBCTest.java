@@ -2,10 +2,11 @@ package orm;
 
 import com.mysql.jdbc.Driver;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.mockito.internal.configuration.FieldAnnotationProcessor;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import springinaction.mvc.basic.Spitter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,17 +20,19 @@ import java.util.Properties;
 public class JDBCTest {
 
 
-
-    private static final String sql2= "INSERT INTO user (username, password) VALUES ('username11','password11')";
+    private static final String SQL_INSERT_1 = "INSERT INTO user (username, password) VALUES ('username11','password11')";
+    private static final String SQL_SELECT = "select * from user where id = ( '? ')  ";
+    private static final String SQL_INSERT_2 = "insert into user (username,password) values(:username,:password)";
 
     @Test
     public void test() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext ("spring-application-context.xml");
         JdbcTemplate jdbcTemplate = (JdbcTemplate) context.getBean ("jdbcTemplate");
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = context.getBean (NamedParameterJdbcTemplate.class);
 
-        System.out.println (jdbcTemplate);
 
-        jdbcTemplate.update (sql2);
+//        jdbcTemplate.update (SQL_INSERT_1);
+
     }
 
     public static void main(String[] args) throws SQLException {
@@ -42,12 +45,12 @@ public class JDBCTest {
 
         Connection connect = driver.connect (url, info);
 
-        String sql = "insert into user(username,password) values (?,?)";
+        String sql = "INSERT INTO user(username,password) VALUES (?,?)";
 
         PreparedStatement preparedStatement = connect.prepareStatement (sql);
 
-        preparedStatement.setString (1,"username");
-        preparedStatement.setString (2,"password");
+        preparedStatement.setString (1, "username");
+        preparedStatement.setString (2, "password");
 
 
         preparedStatement.execute ();

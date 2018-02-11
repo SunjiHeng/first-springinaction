@@ -5,8 +5,10 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:webflow-config="http://www.springframework.org/schema/webflow-config"
        xmlns:jee="http://www.springframework.org/schema/jee" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
 
 
     <bean class="springinaction.sound.system.SgtPeppers" id="sgtPeppers"/>
@@ -46,12 +48,41 @@
     </bean>
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
-         p:dataSource-ref="dataSource">
+          p:dataSource-ref="dataSource">
     </bean>
+
+    <bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" id="namedParameterJdbcTemplate"
+          c:dataSource-ref="dataSource">
+    </bean>
+
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource"
-            p:driverClassName="com.mysql.jdbc.Driver"
-            p:url="jdbc:mysql://localhost:3306/test"
-            p:username="root"
-            p:password="mysql123456">
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:url="jdbc:mysql://localhost:3306/test"
+          p:username="root"
+          p:password="mysql123456">
     </bean>
+
+    <jpa:repositories base-package="springinaction"/>
+
+    <bean class="com.mongodb.MongoClient" id="mongoClient">
+
+    </bean>
+
+    <!--<bean class="org.springframework.data.mongodb.core.MongoFactoryBean" id="mongo"-->
+          <!--p:host="localhost">-->
+    <!--</bean>-->
+
+    <!--<bean class="org.springframework.data.mongodb.core.MongoTemplate" id="mongoTemplate"-->
+          <!--c:mongo-ref="mongo" c:databaseName="OrdersDB">-->
+    <!--</bean>-->
+    <mongo:repositories base-package="springinaction"/>
+
+    <mongo:mongo/>
+
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+        <!--<constructor-arg ref="mongo"/>-->
+
+    <!--</bean>-->
 </beans>
+
+
